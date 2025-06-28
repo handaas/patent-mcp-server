@@ -60,12 +60,12 @@ def call_api(product_id: str, params: dict) -> dict:
     url = f'https://console.handaas.com/api/v1/integrator/call_api/{INTEGRATOR_ID}'
     try:
         response = requests.post(url, data=call_params)
-        return response.json().get("data", "查询为空")
+        return response.json().get("data", None) or response.json().get("msgCN", None)
     except Exception as e:
         return "查询失败"
     
 @mcp.tool()
-def patent_bigdata_patent_search(matchKeyword: str, pageSize: int = None, patentType: str = None, keywordType: str = None,
+def patent_bigdata_patent_search(matchKeyword: str, pageSize: int = 10, patentType: str = None, keywordType: str = None,
                   pageIndex: int = None) -> dict:
     """
     该接口的功能是提供专利信息的搜索服务，通过输入专利名称、申请号、申请人或代理机构等信息进行精准或模糊搜索，并按指定的专利类型进行筛选，返回符合条件的专利详细信息列表。这个接口的使用场景包括：专利代理机构通过该接口获取竞争对手的专利布局情况，研发人员查找特定领域的已有专利以规避侵权，或者企业在技术创新过程中进行专利情报分析，以便判断市场竞争态势和寻找合作机会。
@@ -157,7 +157,7 @@ def patent_bigdata_patent_stats(matchKeyword: str, keywordType: str = None) -> d
 
 
 @mcp.tool()
-def patent_bigdata_fuzzy_search(matchKeyword: str, pageIndex: int = None, pageSize: int = None) -> dict:
+def patent_bigdata_fuzzy_search(matchKeyword: str, pageIndex: int = 1, pageSize: int = None) -> dict:
     """
     该接口的功能是根据提供的企业名称、人名、品牌、产品、岗位等关键词模糊查询相关企业列表。返回匹配的企业列表及其详细信息，用于查找和识别特定的企业信息。
 
