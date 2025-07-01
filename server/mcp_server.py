@@ -79,7 +79,6 @@ def patent_bigdata_patent_search(matchKeyword: str, pageSize: int = 10, patentTy
     - pageIndex: 页码 类型：int - 从1开始
 
     返回参数:
-    - resultList: 结果列表 类型：list of dict
     - _id: 专利id 类型：string
     - calPatentLegalStatus: 专利状态 类型：string
     - patentAgency: 代理机构 类型：string
@@ -169,7 +168,6 @@ def patent_bigdata_fuzzy_search(matchKeyword: str, pageIndex: int = 1, pageSize:
 
     返回参数:
     - total: 总数 类型：int
-    - resultList: 结果列表 类型：list of dict
     - annualTurnover: 年营业额 类型：string
     - formerNames: 曾用名 类型：list of string
     - address: 注册地址 类型：string

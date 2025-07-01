@@ -122,7 +122,6 @@ python server/mcp_server.py streamable-http
 
 **返回值**:
 - `total`: 总数
-- `resultList`: 结果列表
 - 其他企业相关信息
 
 ### 2. patent_bigdata_patent_search
