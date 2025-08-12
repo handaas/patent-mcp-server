@@ -9,7 +9,7 @@ import sys
 
 load_dotenv()
 
-mcp = FastMCP("专利大数据", instructions="专利大数据",dependencies=["python-dotenv", "requests"])
+mcp = FastMCP("专利大数据", instructions="专利大数据", dependencies=["python-dotenv", "requests"])
 
 INTEGRATOR_ID = os.environ.get("INTEGRATOR_ID")
 SECRET_ID = os.environ.get("SECRET_ID")
@@ -77,25 +77,26 @@ def patent_bigdata_patent_search(matchKeyword: str, pageSize: int = 10, patentTy
 
     请求参数:
     - matchKeyword: 匹配关键词 类型：string - 专利名称/专利申请号/公布公告号/申请人/代理机构
-    - pageSize: 分页大小 类型：int - 一页最多获取50条数据
+    - pageSize: 分页大小 类型：int - 一页最多获取50条数据, 不能超过50, 超过50的统一用50代替
     - patentType: 专利类型 类型：select - 专利类型枚举（发明申请，实用新型，发明授权，外观设计）
     - keywordType: 搜索方式 类型：select - 搜索方式枚举（专利名称，申请号/公开号，申请人，代理机构)，默认全部匹配
-    - pageIndex: 页码 类型：int - 从1开始
+    - pageIndex: 页码 类型：int - 默认从1开始
 
     返回参数:
-    - _id: 专利id 类型：string
-    - calPatentLegalStatus: 专利状态 类型：string
-    - patentAgency: 代理机构 类型：string
-    - patentAgencyNameId: 代理机构id 类型：string
-    - patentApplicantName: 申请人名称 类型：string
-    - patentApplicationDate: 专利申请日期 类型：string
-    - patentApplicantNameId: 申请人id 类型：string
-    - patentIPC: IPC分类号 类型：list of str
-    - patentName: 专利名称 类型：string
-    - patentApplicationNum: 专利申请号 类型：string
-    - patentPubNum: 专利公告号 类型：string
-    - patentPubDate: 专利公告日期 类型：string
-    - patentType: 专利类型 类型：string
+    - resultList: 结果列表 类型：list of dict
+        - _id: 专利id 类型：string
+        - calPatentLegalStatus: 专利状态 类型：string
+        - patentAgency: 代理机构 类型：string
+        - patentAgencyNameId: 代理机构id 类型：string
+        - patentApplicantName: 申请人名称 类型：string
+        - patentApplicationDate: 专利申请日期 类型：string
+        - patentApplicantNameId: 申请人id 类型：string
+        - patentIPC: IPC分类号 类型：list of str
+        - patentName: 专利名称 类型：string
+        - patentApplicationNum: 专利申请号 类型：string
+        - patentPubNum: 专利公告号 类型：string
+        - patentPubDate: 专利公告日期 类型：string
+        - patentType: 专利类型 类型：string
     - total: 总数 类型：int
     """
     # 构建请求参数
@@ -126,25 +127,25 @@ def patent_bigdata_patent_stats(matchKeyword: str, keywordType: str = None) -> d
 
     返回参数:
     - patentDivAppLegalStat: 专利状态分布 类型：list of dict
-    - patentCount: 专利数量 类型：int
-    - patentDivAppLegal: 专利状态名称 类型：string
+        - patentCount: 专利数量 类型：int
+        - patentDivAppLegal: 专利状态名称 类型：string
     - patentTypeAppTimeStat: 专利申请趋势 类型：list of dict
-    - appearanceDesignPatentCount: 外观设计专利数量 类型：int
-    - inventionLicPatentCount: 发明授权专利数量 类型：int
-    - inventionAppPatentCount: 发明申请专利数量 类型：int
-    - year: 年份 类型：string
+        - appearanceDesignPatentCount: 外观设计专利数量 类型：int
+        - inventionLicPatentCount: 发明授权专利数量 类型：int
+        - inventionAppPatentCount: 发明申请专利数量 类型：int
+        - utilityModelPatentCount: 实用新型专利数量 类型：int
+        - year: 年份 类型：string
     - patentTypePubTimeStat: 专利授权趋势 类型：list of dict
-    - inventionAppPatentCount: 发明申请专利数量 类型：int
-    - inventionLicPatentCount: 发明授权专利数量 类型：int
-    - utilityModelPatentCount: 实用新型专利数量 类型：int
-    - utilityModelPatentCount: 实用新型专利数量 类型：int
-    - appearanceDesignPatentCount: 外观设计专利数量 类型：int
-    - year: 年份 类型：string
-    - inventionAppPatentCount: 发明申请专利数量 类型：int
-    - inventionLicPatentCount: 发明授权专利数量 类型：int
-    - utilityModelPatentCount: 实用新型专利数量 类型：int
-    - appearanceDesignPatentCount: 外观设计专利数量 类型：int
+        - inventionAppPatentCount: 发明申请专利数量 类型：int
+        - inventionLicPatentCount: 发明授权专利数量 类型：int
+        - utilityModelPatentCount: 实用新型专利数量 类型：int
+        - appearanceDesignPatentCount: 外观设计专利数量 类型：int
+        - year: 年份 类型：string
     - patentTypeStat: 专利类型分布 类型：dict
+        - inventionAppPatentCount: 发明申请专利数量 类型：int
+        - inventionLicPatentCount: 发明授权专利数量 类型：int
+        - utilityModelPatentCount: 实用新型专利数量 类型：int
+        - appearanceDesignPatentCount: 外观设计专利数量 类型：int
     """
     # 构建请求参数
     params = {
@@ -160,7 +161,7 @@ def patent_bigdata_patent_stats(matchKeyword: str, keywordType: str = None) -> d
 
 
 @mcp.tool()
-def patent_bigdata_fuzzy_search(matchKeyword: str, pageIndex: int = 1, pageSize: int = None) -> dict:
+def patent_bigdata_fuzzy_search(matchKeyword: str, pageIndex: int = 1, pageSize: int = 50) -> dict:
     """
     该接口的功能是根据提供的企业名称、人名、品牌、产品、岗位等关键词模糊查询相关企业列表。返回匹配的企业列表及其详细信息，用于查找和识别特定的企业信息。
 
@@ -170,39 +171,44 @@ def patent_bigdata_fuzzy_search(matchKeyword: str, pageIndex: int = 1, pageSize:
     - pageIndex: 分页开始位置 类型：int
     - pageSize: 分页结束位置 类型：int - 一页最多获取50条数据
 
+    请求参数:
+    - matchKeyword: 匹配关键词 类型：string - 查询各类信息包含匹配关键词的企业
+    - pageIndex: 分页开始位置 类型：int - 默认从1开始
+    - pageSize: 分页结束位置 类型：int - 一页最多获取50条数据, 不能超过50, 超过50的统一用50代替
+
     返回参数:
     - total: 总数 类型：int
-    - annualTurnover: 年营业额 类型：string
-    - formerNames: 曾用名 类型：list of string
-    - address: 注册地址 类型：string
-    - foundTime: 成立时间 类型：string
-    - enterpriseType: 企业主体类型 类型：string
-    - legalRepresentative: 法定代表人 类型：string
-    - homepage: 企业官网 类型：string
-    - legalRepresentativeId: 法定代表人id 类型：string
-    - prmtKeys: 推广关键词 类型：list of string
-    - operStatus: 企业状态 类型：string
-    - logo: 企业logo 类型：string
-    - nameId: 企业id 类型：string
-    - regCapitalCoinType: 注册资本币种 类型：string
-    - regCapitalValue: 注册资本金额 类型：int
-    - name: 企业名称 类型：string
-    - catchReason: 命中原因 类型：dict
-    - catchReason.name: 企业名称 类型：list of string
-    - catchReason.formerNames: 曾用名 类型：list of string
-    - catchReason.holderList: 股东 类型：list of string
-    - catchReason.recruitingName: 招聘岗位 类型：list of string
-    - catchReason.address: 地址 类型：list of string
-    - catchReason.operBrandList: 品牌 类型：list of string
-    - catchReason.goodsNameList: 产品名称 类型：list of string
-    - catchReason.phoneList: 固话 类型：list of string
-    - catchReason.emailList: 邮箱 类型：list of string
-    - catchReason.mobileList: 手机 类型：list of string
-    - catchReason.patentNameList: 专利 类型：list of string
-    - catchReason.certNameList: 资质证书 类型：list of string
-    - catchReason.prmtKeys: 推广关键词 类型：list of string
-    - catchReason.socialCreditCode: 统一社会信用代码 类型：list of string
-
+    - resultList:查询返回企业信息列表 类型：list of dict:
+        - annualTurnover: 年营业额 类型：string
+        - formerNames: 曾用名 类型：list of string
+        - address: 注册地址 类型：string
+        - foundTime: 成立时间 类型：string
+        - enterpriseType: 企业主体类型 类型：string
+        - legalRepresentative: 法定代表人 类型：string
+        - legalRepresentativeId: 法定代表人id 类型：string
+        - homepage: 企业官网 类型：string
+        - prmtKeys: 推广关键词 类型：list of string
+        - operStatus: 企业状态 类型：string
+        - logo: 企业logo 类型：string
+        - nameId: 企业id 类型：string
+        - regCapitalCoinType: 注册资本币种 类型：string
+        - regCapitalValue: 注册资本金额 类型：int
+        - name: 企业名称 类型：string
+        - catchReason: 命中原因 类型：dict
+            - catchReason.name: 企业名称 类型：list of string
+            - catchReason.formerNames: 曾用名 类型：list of string
+            - catchReason.holderList: 股东 类型：list of string
+            - catchReason.recruitingName: 招聘岗位 类型：list of string
+            - catchReason.address: 地址 类型：list of string
+            - catchReason.operBrandList: 品牌 类型：list of string
+            - catchReason.goodsNameList: 产品名称 类型：list of string
+            - catchReason.phoneList: 固话 类型：list of string
+            - catchReason.emailList: 邮箱 类型：list of string
+            - catchReason.mobileList: 手机 类型：list of string
+            - catchReason.patentNameList: 专利 类型：list of string
+            - catchReason.certNameList: 资质证书 类型：list of string
+            - catchReason.prmtKeys: 推广关键词 类型：list of string
+            - catchReason.socialCreditCode: 统一社会信用代码 类型：list of string
     """
     # 构建请求参数
     params = {
